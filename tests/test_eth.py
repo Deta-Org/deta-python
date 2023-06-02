@@ -1,8 +1,8 @@
 import pytest
 import re
 import web3
-import dydx.constants as consts
-from dydx.client import Client
+import deta.constants as consts
+from deta.client import Client
 
 PRIVATE_KEY_1 = '0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d'  # noqa: E501
 ADDRESS_1 = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'

@@ -1,4 +1,4 @@
-import dydx.constants as consts
+import deta.constants as consts
 
 
 class EthPerp(object):
@@ -170,7 +170,7 @@ class EthPerp(object):
         market
     ):
         '''
-        Gets dYdX balances for my account.
+        Gets deta balances for my account.
 
         :returns: Object { margin: number, position, number }
         '''
@@ -182,7 +182,7 @@ class EthPerp(object):
         address
     ):
         '''
-        Gets dYdX balances for some account.
+        Gets deta balances for some account.
 
         :param address: required
         :type address: str (address)

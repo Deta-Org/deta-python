@@ -5,21 +5,21 @@ LONG_DESCRIPTION = open('README.md', 'r').read()
 REQUIREMENTS = open('requirements.txt', 'r').read().split('\n')
 
 setup(
-    name='dydx-python',
+    name='deta-python',
     version='0.11.3',
     packages=find_packages(),
     package_data={
-        'dydx': ['abi/*.json'],
+        'deta': ['abi/*.json'],
     },
-    description='dYdX Python REST API for Limit Orders',
+    description='deta Python REST API for Limit Orders',
     long_description=LONG_DESCRIPTION,
     long_description_content_type='text/markdown',
-    url='https://github.com/dydxprotocol/dydx-python',
-    author='dYdX Trading Inc.',
+    url='https://github.com/detaprotocol/deta-python',
+    author='deta Trading Inc.',
     license='Apache 2.0',
-    author_email='contact@dydx.exchange',
+    author_email='contact@deta.exchange',
     install_requires=REQUIREMENTS,
-    keywords='dydx exchange rest api defi ethereum eth',
+    keywords='deta exchange rest api defi ethereum eth',
     classifiers=[
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',

@@ -1,6 +1,6 @@
 from web3 import Web3
-import dydx.constants as consts
-import dydx.util as utils
+import deta.constants as consts
+import deta.util as utils
 
 EIP712_ORDER_STRUCT_STRING = \
   'Order(' + \

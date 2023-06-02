@@ -2,7 +2,7 @@ from web3 import Web3
 import eth_keys
 import eth_account
 import time
-import dydx.constants as consts
+import deta.constants as consts
 
 
 def get_eip712_hash(domain_hash, struct_hash):

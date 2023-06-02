@@ -1,4 +1,4 @@
-import dydx.constants as consts
+import deta.constants as consts
 
 
 class EthSolo(object):
@@ -270,7 +270,7 @@ class EthSolo(object):
         self
     ):
         '''
-        Gets dYdX balances for my account.
+        Gets deta balances for my account.
 
         :returns: number
         '''
@@ -285,7 +285,7 @@ class EthSolo(object):
         accountNumber
     ):
         '''
-        Gets dYdX balances for some account.
+        Gets deta balances for some account.
 
         :param address: required
         :type address: str (address)

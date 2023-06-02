@@ -1,4 +1,4 @@
-import dydx.solo_orders as solo_orders
+import deta.solo_orders as solo_orders
 from decimal import Decimal
 
 PRIVATE_KEY_1 = '0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d'  # noqa: E501

@@ -3,12 +3,12 @@ import json
 import pytest
 import requests_mock
 import tests.test_json
-import dydx.util as utils
-import dydx.constants as consts
-import dydx.perp_orders as perp_orders
-import dydx.solo_orders as solo_orders
+import deta.util as utils
+import deta.constants as consts
+import deta.perp_orders as perp_orders
+import deta.solo_orders as solo_orders
 from decimal import Decimal
-from dydx.client import Client
+from deta.client import Client
 
 PRIVATE_KEY_1 = '0x4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d'  # noqa: E501
 PRIVATE_KEY_2 = '0x6cbed15c793ce57650b9877cf6fa156fbef513c4e6134f022a85b1ffdd59b2a1'  # noqa: E501
@@ -158,14 +158,14 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_pairs_json
-            rm.get('https://api.dydx.exchange/v2/markets', json=json_obj)
+            rm.get('https://api.deta.exchange/v2/markets', json=json_obj)
             result = client.get_pairs()
             assert result == json_obj
 
     def test_get_pairs_fail(self):
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
-            rm.get('https://api.dydx.exchange/v2/markets', status_code=400)
+            rm.get('https://api.deta.exchange/v2/markets', status_code=400)
             with pytest.raises(Exception) as error:
                 client.get_pairs()
             assert '400' in str(error.value)
@@ -176,7 +176,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_balances_json
-            uri = 'https://api.dydx.exchange/v1/accounts/' \
+            uri = 'https://api.deta.exchange/v1/accounts/' \
                 + client.public_address \
                 + '?number=' + str(client.account_number)
             rm.get(uri, json=json_obj)
@@ -195,7 +195,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_balances_json
-            uri = 'https://api.dydx.exchange/v1/accounts/' + ADDRESS_2
+            uri = 'https://api.deta.exchange/v1/accounts/' + ADDRESS_2
             rm.get(uri, json=json_obj)
             result = client.get_balances(
                 address=ADDRESS_2
@@ -206,7 +206,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_balances_json
-            uri = 'https://api.dydx.exchange/v1/accounts/' \
+            uri = 'https://api.deta.exchange/v1/accounts/' \
                 + ADDRESS_2 \
                 + '?number=' + str(1234)
             rm.get(uri, json=json_obj)
@@ -222,7 +222,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_balances_json
-            uri = 'https://api.dydx.exchange/v1/perpetual-accounts/' \
+            uri = 'https://api.deta.exchange/v1/perpetual-accounts/' \
                 + client.public_address
             rm.get(uri, json=json_obj)
             result = client.get_my_perpetual_balances()
@@ -240,7 +240,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_balances_json
-            uri = 'https://api.dydx.exchange/v1/perpetual-accounts/' + \
+            uri = 'https://api.deta.exchange/v1/perpetual-accounts/' + \
                 ADDRESS_2
             rm.get(uri, json=json_obj)
             result = client.get_perpetual_balances(address=ADDRESS_2)
@@ -258,7 +258,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_orders_json
-            uri = 'https://api.dydx.exchange/v2/orders' \
+            uri = 'https://api.deta.exchange/v2/orders' \
                 + '?accountOwner=' + client.public_address \
                 + '&accountNumber=' + str(client.account_number)
             rm.get(uri, json=json_obj)
@@ -272,7 +272,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_orders_json
-            uri = 'https://api.dydx.exchange/v2/orders' \
+            uri = 'https://api.deta.exchange/v2/orders' \
                 + '?accountOwner=' + client.public_address \
                 + '&accountNumber=' + str(client.account_number) \
                 + '&market=' + ','.join(MARKETS)
@@ -288,7 +288,7 @@ class TestClient():
         startingBefore = datetime.datetime.utcnow().isoformat()
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_orders_json
-            uri = 'https://api.dydx.exchange/v2/orders' \
+            uri = 'https://api.deta.exchange/v2/orders' \
                 + '?accountOwner=' + client.public_address \
                 + '&accountNumber=' + str(client.account_number) \
                 + '&market=' + ','.join(MARKETS) \
@@ -310,7 +310,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_orders_json
-            uri = 'https://api.dydx.exchange/v2/orders' \
+            uri = 'https://api.deta.exchange/v2/orders' \
                 + '?market=' + ','.join(MARKETS)
             rm.get(uri, json=json_obj)
             result = client.get_orders(
@@ -324,7 +324,7 @@ class TestClient():
         startingBefore = datetime.datetime.utcnow().isoformat()
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_orders_json
-            uri = 'https://api.dydx.exchange/v2/orders' \
+            uri = 'https://api.deta.exchange/v2/orders' \
                 + '?market=' + ','.join(MARKETS) \
                 + '&limit=' + str(limit) \
                 + '&startingBefore=' + startingBefore
@@ -342,7 +342,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_order_json
-            uri = 'https://api.dydx.exchange/v2/orders/' \
+            uri = 'https://api.deta.exchange/v2/orders/' \
                 + ORDER_HASH
             rm.get(uri, json=json_obj)
             result = client.get_order(
@@ -362,7 +362,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_fills_json
-            uri = 'https://api.dydx.exchange/v2/fills' \
+            uri = 'https://api.deta.exchange/v2/fills' \
                 + '?accountOwner=' + client.public_address \
                 + '&accountNumber=' + str(client.account_number) \
                 + '&market=' + ','.join(MARKETS)
@@ -378,7 +378,7 @@ class TestClient():
         startingBefore = datetime.datetime.utcnow().isoformat()
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_fills_json
-            uri = 'https://api.dydx.exchange/v2/fills' \
+            uri = 'https://api.deta.exchange/v2/fills' \
                 + '?accountOwner=' + client.public_address \
                 + '&accountNumber=' + str(client.account_number) \
                 + '&market=' + ','.join(MARKETS) \
@@ -398,7 +398,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_fills_json
-            uri = 'https://api.dydx.exchange/v2/fills' \
+            uri = 'https://api.deta.exchange/v2/fills' \
                 + '?market=' + ','.join(MARKETS)
             rm.get(uri, json=json_obj)
             result = client.get_fills(
@@ -412,7 +412,7 @@ class TestClient():
         startingBefore = datetime.datetime.utcnow().isoformat()
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_fills_json
-            uri = 'https://api.dydx.exchange/v2/fills' \
+            uri = 'https://api.deta.exchange/v2/fills' \
                 + '?market=' + ','.join(MARKETS) \
                 + '&limit=' + str(limit) \
                 + '&startingBefore=' + startingBefore
@@ -436,7 +436,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_trades_json
-            uri = 'https://api.dydx.exchange/v2/trades' \
+            uri = 'https://api.deta.exchange/v2/trades' \
                 + '?accountOwner=' + client.public_address \
                 + '&accountNumber=' + str(client.account_number) \
                 + '&market=' + ','.join(MARKETS)
@@ -452,7 +452,7 @@ class TestClient():
         startingBefore = datetime.datetime.utcnow().isoformat()
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_trades_json
-            uri = 'https://api.dydx.exchange/v2/trades' \
+            uri = 'https://api.deta.exchange/v2/trades' \
                 + '?accountOwner=' + client.public_address \
                 + '&accountNumber=' + str(client.account_number) \
                 + '&market=' + ','.join(MARKETS) \
@@ -472,7 +472,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_trades_json
-            uri = 'https://api.dydx.exchange/v2/trades' \
+            uri = 'https://api.deta.exchange/v2/trades' \
                 + '?market=' + ','.join(MARKETS)
             rm.get(uri, json=json_obj)
             result = client.get_trades(
@@ -486,7 +486,7 @@ class TestClient():
         startingBefore = datetime.datetime.utcnow().isoformat()
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_trades_json
-            uri = 'https://api.dydx.exchange/v2/trades' \
+            uri = 'https://api.deta.exchange/v2/trades' \
                 + '?market=' + ','.join(MARKETS) \
                 + '&limit=' + str(limit) \
                 + '&startingBefore=' + startingBefore
@@ -505,7 +505,7 @@ class TestClient():
         market = MARKETS[0]
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_orders_json
-            uri = 'https://api.dydx.exchange/v1/orderbook/' + market
+            uri = 'https://api.deta.exchange/v1/orderbook/' + market
             rm.get(uri, json=json_obj)
             result = client.get_orderbook(
                 market=market,
@@ -519,7 +519,7 @@ class TestClient():
         market = MARKETS[0]
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_market_json
-            uri = 'https://api.dydx.exchange/v2/markets/' + market
+            uri = 'https://api.deta.exchange/v2/markets/' + market
             rm.get(uri, json=json_obj)
             result = client.get_market(
                 market=market,
@@ -530,7 +530,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_markets_json
-            uri = 'https://api.dydx.exchange/v2/markets'
+            uri = 'https://api.deta.exchange/v2/markets'
             rm.get(uri, json=json_obj)
             result = client.get_markets()
             assert result == json_obj
@@ -542,7 +542,7 @@ class TestClient():
         market = 'PBTC-USDC'
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_market_json
-            uri = 'https://api.dydx.exchange/v1/perpetual-markets/' + market
+            uri = 'https://api.deta.exchange/v1/perpetual-markets/' + market
             rm.get(uri, json=json_obj)
             result = client.get_perpetual_market(
                 market=market,
@@ -553,7 +553,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_get_markets_json
-            uri = 'https://api.dydx.exchange/v1/perpetual-markets'
+            uri = 'https://api.deta.exchange/v1/perpetual-markets'
             rm.get(uri, json=json_obj)
             result = client.get_perpetual_markets()
             assert result == json_obj
@@ -565,7 +565,7 @@ class TestClient():
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_place_order_json
             rm.post(
-                'https://api.dydx.exchange/v2/orders',
+                'https://api.deta.exchange/v2/orders',
                 additional_matcher=_create_solo_order_matcher(
                     client,
                     {
@@ -591,7 +591,7 @@ class TestClient():
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_place_order_json
             rm.post(
-                'https://api.dydx.exchange/v2/orders',
+                'https://api.deta.exchange/v2/orders',
                 additional_matcher=_create_solo_order_matcher(
                     client,
                     {
@@ -617,7 +617,7 @@ class TestClient():
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_place_order_json
             rm.post(
-                'https://api.dydx.exchange/v2/orders',
+                'https://api.deta.exchange/v2/orders',
                 additional_matcher=_create_perp_order_matcher(
                     client,
                     {
@@ -655,7 +655,7 @@ class TestClient():
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_cancel_order_json
             rm.delete(
-                'https://api.dydx.exchange/v2/orders/' + ORDER_HASH,
+                'https://api.deta.exchange/v2/orders/' + ORDER_HASH,
                 additional_matcher=additional_matcher,
                 json=json_obj
             )
@@ -680,7 +680,7 @@ class TestClient():
         with requests_mock.mock() as rm:
             json_obj = tests.test_json.mock_cancel_order_json
             rm.delete(
-                'https://api.dydx.exchange/v2/orders/' + PERP_ORDER_HASH,
+                'https://api.deta.exchange/v2/orders/' + PERP_ORDER_HASH,
                 additional_matcher=additional_matcher,
                 json=json_obj
             )
@@ -695,7 +695,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = {'key': 'mock get_funding_rates response'}
-            uri = 'https://api.dydx.exchange/v1/funding-rates'
+            uri = 'https://api.deta.exchange/v1/funding-rates'
             rm.get(uri, json=json_obj)
             result = client.get_funding_rates()
             assert result == json_obj
@@ -704,7 +704,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = {'key': 'mock get_funding_rates response'}
-            uri = 'https://api.dydx.exchange/v1/funding-rates' \
+            uri = 'https://api.deta.exchange/v1/funding-rates' \
                 + '?markets=' + ','.join(PERPETUAL_MARKETS)
             rm.get(uri, json=json_obj)
             result = client.get_funding_rates(
@@ -718,7 +718,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = {'key': 'mock get_historical_funding response'}
-            uri = 'https://api.dydx.exchange/v1/historical-funding-rates'
+            uri = 'https://api.deta.exchange/v1/historical-funding-rates'
             rm.get(uri, json=json_obj)
             result = client.get_historical_funding_rates()
             assert result == json_obj
@@ -727,7 +727,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = {'key': 'mock get_historical_funding response'}
-            uri = 'https://api.dydx.exchange/v1/historical-funding-rates' \
+            uri = 'https://api.deta.exchange/v1/historical-funding-rates' \
                 + '?markets=' + ','.join(PERPETUAL_MARKETS)
             rm.get(uri, json=json_obj)
             result = client.get_historical_funding_rates(
@@ -741,7 +741,7 @@ class TestClient():
             json_obj = {'key': 'mock get_historical_funding response'}
             limit = 50
             startingBefore = '2020-04-10T22:00:00.000Z'
-            uri = 'https://api.dydx.exchange/v1/historical-funding-rates' \
+            uri = 'https://api.deta.exchange/v1/historical-funding-rates' \
                 + '?limit=' + str(limit) \
                 + '&startingBefore=' + str(startingBefore)
             rm.get(uri, json=json_obj)
@@ -757,7 +757,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = {'key': 'mock get_funding_index response'}
-            uri = 'https://api.dydx.exchange/v1/index-price'
+            uri = 'https://api.deta.exchange/v1/index-price'
             rm.get(uri, json=json_obj)
             result = client.get_funding_index_price()
             assert result == json_obj
@@ -766,7 +766,7 @@ class TestClient():
         client = Client(PRIVATE_KEY_1)
         with requests_mock.mock() as rm:
             json_obj = {'key': 'mock get_funding_index response'}
-            uri = 'https://api.dydx.exchange/v1/index-price' \
+            uri = 'https://api.deta.exchange/v1/index-price' \
                 + '?markets=' + ','.join(PERPETUAL_MARKETS)
             rm.get(uri, json=json_obj)
             result = client.get_funding_index_price(

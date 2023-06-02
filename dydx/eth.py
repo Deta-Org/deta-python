@@ -1,9 +1,9 @@
 import json
 import os
-import dydx.constants as consts
+import deta.constants as consts
 from web3 import Web3
-from dydx.eth_solo import EthSolo
-from dydx.eth_perp import EthPerp
+from deta.eth_solo import EthSolo
+from deta.eth_perp import EthPerp
 
 
 class Eth(object):

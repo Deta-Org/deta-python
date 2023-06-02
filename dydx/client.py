@@ -1,17 +1,17 @@
 import json
 import random
 import requests
-import dydx.util as utils
-import dydx.constants as consts
-import dydx.solo_orders as solo_orders
-import dydx.perp_orders as perp_orders
+import deta.util as utils
+import deta.constants as consts
+import deta.solo_orders as solo_orders
+import deta.perp_orders as perp_orders
 from decimal import Decimal
-from dydx.eth import Eth
-from .exceptions import DydxAPIError
+from deta.eth import Eth
+from .exceptions import detaAPIError
 
 
 class Client(object):
-    BASE_API_URI = 'https://api.dydx.exchange'
+    BASE_API_URI = 'https://api.deta.exchange'
 
     def __init__(
         self,
@@ -39,7 +39,7 @@ class Client(object):
         session.headers.update({
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            'User-Agent': 'dydx/python'
+            'User-Agent': 'deta/python'
         })
         return session
 
@@ -47,7 +47,7 @@ class Client(object):
         complete_uri = self.BASE_API_URI + uri
         response = getattr(self.session, method)(complete_uri, **kwargs)
         if not str(response.status_code).startswith('2'):
-            raise DydxAPIError(response)
+            raise detaAPIError(response)
         return response.json()
 
     def _get(self, *args, **kwargs):
@@ -99,7 +99,7 @@ class Client(object):
 
         :returns: Order
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
 
         baseMarket, quoteMarket = utils.pair_to_base_quote_markets(market)
@@ -164,7 +164,7 @@ class Client(object):
 
         :returns: Order
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
 
         isBuy = utils.get_is_buy(side)
@@ -198,7 +198,7 @@ class Client(object):
 
         :returns: list of trading pairs
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         return self._get('/v2/markets')
 
@@ -210,7 +210,7 @@ class Client(object):
 
         :returns: list of balances
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         return self.get_balances(
             address=self.public_address,
@@ -233,7 +233,7 @@ class Client(object):
 
         :returns: list of balances
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         params = utils.dict_to_query_params({
             'number': number
@@ -248,7 +248,7 @@ class Client(object):
 
         :returns: list of balances
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         return self.get_perpetual_balances(address=self.public_address)
 
@@ -264,7 +264,7 @@ class Client(object):
 
         :returns: list of balances
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         return self._get('/v1/perpetual-accounts/' + address)
 
@@ -305,7 +305,7 @@ class Client(object):
 
         :returns: list of existing orders
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         return self.get_orders(
             market=market,
@@ -370,7 +370,7 @@ class Client(object):
 
         :returns: list of existing orders
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         params = utils.dict_to_query_params({
             'market': None if market is None else ','.join(market),
@@ -396,7 +396,7 @@ class Client(object):
 
         :returns: existing order
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         return self._get('/v2/orders/'+orderId)
 
@@ -427,7 +427,7 @@ class Client(object):
 
         :returns: list of processed fills
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         return self.get_fills(
             market=market,
@@ -481,7 +481,7 @@ class Client(object):
 
         :returns: list of existing fills
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         params = utils.dict_to_query_params({
             'market': None if market is None else ','.join(market),
@@ -537,7 +537,7 @@ class Client(object):
 
         :returns: list of existing trades
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         params = utils.dict_to_query_params({
             'market': None if market is None else ','.join(market),
@@ -570,7 +570,7 @@ class Client(object):
 
         :returns: list of processed trades
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         return self.get_trades(
             market=market,
@@ -639,7 +639,7 @@ class Client(object):
 
         :returns: Order
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
 
         if market in [
@@ -728,7 +728,7 @@ class Client(object):
 
         :returns: Order
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         signature = solo_orders.sign_cancel_order(hash, self.private_key)
         return self._delete(
@@ -748,7 +748,7 @@ class Client(object):
 
         :returns: Order
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         signature = perp_orders.sign_cancel_order(hash, self.private_key)
         return self._delete(
@@ -767,7 +767,7 @@ class Client(object):
 
         :returns: { asks: OrderOnOrderbook[], bids: OrderOnOrderbook[] }
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         return self._get('/v1/orderbook/' + market)
 
@@ -784,7 +784,7 @@ class Client(object):
 
         :returns: { market: MarketMessageV2 }
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         return self._get('/v2/markets/' + market)
 
@@ -796,7 +796,7 @@ class Client(object):
 
         :returns: { markets : { [market: str]: MarketMessageV2 } }
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         return self._get('/v2/markets')
 
@@ -816,7 +816,7 @@ class Client(object):
 
         :returns: { market: PerpetualMarket }
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         return self._get('/v1/perpetual-markets/' + market)
 
@@ -828,7 +828,7 @@ class Client(object):
 
         :returns: { markets : [market: str]: PerpetualMarket } }
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         return self._get('/v1/perpetual-markets')
 
@@ -860,7 +860,7 @@ class Client(object):
             [market: str]: { current: FundingRate, predicted: FundingRate }
         }
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         params = utils.dict_to_query_params({
             'markets': None if markets is None else ','.join(markets),
@@ -891,7 +891,7 @@ class Client(object):
 
         :returns: { [market: str]: { history: FundingRate[] } }
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         params = utils.dict_to_query_params({
                 'markets': None if markets is None else ','.join(markets),
@@ -918,7 +918,7 @@ class Client(object):
 
         :returns: { [market: str]: { price: str } }
 
-        :raises: DydxAPIError
+        :raises: detaAPIError
         '''
         params = utils.dict_to_query_params({
             'markets': None if markets is None else ','.join(markets),
