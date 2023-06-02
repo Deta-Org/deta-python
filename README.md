@@ -1,17 +1,3 @@
-<p align="center"><img src="https://s3.amazonaws.com/deta-assets/deta_logo_black.svg" width="256" /></p>
-
-<div align="center">
-  <a href="https://circleci.com/gh/detaprotocol/workflows/deta-python/tree/master">
-    <img src="https://img.shields.io/circleci/project/github/detaprotocol/deta-python.svg" alt='CI' />
-  </a>
-  <a href='https://pypi.org/project/deta-python'>
-    <img src='https://img.shields.io/pypi/v/deta-python.svg' alt='PyPi'/>
-  </a>
-  <a href='https://github.com/detaprotocol/deta-python/blob/master/LICENSE'>
-    <img src='https://img.shields.io/github/license/detaprotocol/deta-python.svg?longCache=true' alt='License' />
-  </a>
-</div>
-
 deta Python API for Limit Orders
 
 The library is currently tested against Python versions 2.7, 3.4, 3.5, and 3.6
